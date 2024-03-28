@@ -76,7 +76,7 @@ int iterative(std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
             
 
 // Iterative:
-int iterative_path(std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
+std::tuple<int, std::pair<int, int>, std::string> iterative_path(std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
     std::vector<std::vector<std::vector<int>>> dp(s.size() + 1, std::vector<std::vector<int>>(matrix.size(), std::vector<int>(matrix.front().size(), 0)));
     std::vector<std::pair<int, int>> path(s.size(), {0, 0});
     for (int i = 1; i < dp.size(); ++i) // Iterate through the matrix:
@@ -135,11 +135,10 @@ int iterative_path(std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
             path.at(i) = coordinate.at(3);
         }
     }
-
-    std::cout << min << std::endl;
-    std::cout << path.front().first + 1 << " " << path.front().second + 1 << std::endl;
-    std::cout << path_s << std::endl;
-    return min;
+    path.front().first++;
+    path.front().second++;
+    std::tuple<int, std::pair<int, int>, std::string> tuple(min, path.front(), path_s);
+    return tuple;
 }
 
 // Iterative with reduced space complexity:
@@ -186,9 +185,19 @@ int main() {
 
     // Test the functions:
     //std::cout << iterative(s, matrix) << std::endl; // Iterative with reduced space complexity
-    iterative_path(s, matrix); // Iterative with path
+    std::tuple<int, std::pair<int, int>, std::string> tuple = iterative_path(s, matrix); // Iterative with path
     std::cout << memoization(s, matrix) << std::endl; // Memoization
     std::cout << iterative_reduced(s, matrix) << std::endl;
     //std::cout << recursive(s, matrix) << std::endl; // Recursive
+
+    std::ofstream output("output.txt");
+    if (output.is_open()) {
+        output << std::get<0>(tuple) << std::endl << std::get<1>(tuple).first << " " << std::get<1>(tuple).second << std::endl << std::get<2>(tuple);
+        output.close();
+    }
+    else {
+        std::cerr << "Error writing to the file" << std::endl;
+        return 1;
+    }
     return 0;
 }

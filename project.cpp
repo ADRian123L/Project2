@@ -95,7 +95,7 @@ std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> iterative_path
                 path.front() = {i, j};
                 min = dp.back().at(i).at(j);
             }
-    std::string path_s;
+    std::string path_s; // String to store the path
     int up, down, left, right; // Find the path:
     std::vector<std::pair<int, int>> coordinate(4, {0, 0});
     for (std::size_t i = 1; i < dp.size() - 1; i++) {

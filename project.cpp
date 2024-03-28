@@ -183,6 +183,8 @@ int main() {
         return 1;
     }
     // Calculate the minimum value:
+    /* We are calling 'iterative_path' which returns a three values: the minimal difference, the starting point, and the path. 
+    The function is iterative. */
     std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> tuple = iterative_path(s, matrix); // Iterative with path
     // Write the output:
     std::ofstream output("output.txt");

@@ -100,24 +100,24 @@ std::tuple<int, std::pair<int, int>, std::string> iterative_path(std::vector<int
     std::vector<std::pair<int, int>> coordinate(4, {0, 0});
     for (int i = 1; i < dp.size() - 1; i++) {
         up = down = left = right = INT_MAX;
-        if (path.at(i - 1).first - 1 >= 0) {
+        if (path.at(i - 1).first - 1 >= 0) { // Check if the path is valid
             up = dp.at(dp.size() - i - 1).at(path.at(i - 1).first - 1).at(path.at(i - 1).second);
             coordinate.at(0) = {path.at(i - 1).first - 1, path.at(i - 1).second};
         }
-        if (path.at(i - 1).first + 1 < matrix.size()) {
+        if (path.at(i - 1).first + 1 < matrix.size()) { // Check if the path is valid
             down = dp.at(dp.size() - i - 1).at(path.at(i - 1).first + 1).at(path.at(i - 1).second);
             coordinate.at(1) = {path.at(i - 1).first + 1, path.at(i - 1).second};
         }
-        if (path.at(i - 1).second - 1 >= 0) {
+        if (path.at(i - 1).second - 1 >= 0) { // Check if the path is valid
             left = dp.at(dp.size() - i - 1).at(path.at(i - 1).first).at(path.at(i - 1).second - 1);
             coordinate.at(2) = {path.at(i - 1).first, path.at(i - 1).second - 1};
         }
-        if (path.at(i - 1).second + 1 < matrix.front().size()) {
+        if (path.at(i - 1).second + 1 < matrix.front().size()) { // Check if the path is valid
             right = dp.at(dp.size() - i - 1).at(path.at(i - 1).first).at(path.at(i - 1).second + 1);
             coordinate.at(3) = {path.at(i - 1).first, path.at(i - 1).second + 1};
         }
 
-        int smallest = std::min({up, down, left, right});
+        int smallest = std::min({up, down, left, right}); // Find the smallest value
         if (up == smallest) {
             path_s.push_back('U');
             path.at(i) = coordinate.at(0);
@@ -183,13 +183,9 @@ int main() {
         return 1;
     }
 
-    // Test the functions:
-    //std::cout << iterative(s, matrix) << std::endl; // Iterative with reduced space complexity
+    // Calculate the minimum value:
     std::tuple<int, std::pair<int, int>, std::string> tuple = iterative_path(s, matrix); // Iterative with path
-    std::cout << memoization(s, matrix) << std::endl; // Memoization
-    std::cout << iterative_reduced(s, matrix) << std::endl;
-    //std::cout << recursive(s, matrix) << std::endl; // Recursive
-
+    // Write the output:
     std::ofstream output("output.txt");
     if (output.is_open()) {
         output << std::get<0>(tuple) << std::endl << std::get<1>(tuple).first << " " << std::get<1>(tuple).second << std::endl << std::get<2>(tuple);

@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 
-int f(int n, int m, int z, std::vector<int> &s, std::vector<std::vector<int>> &matrix, std::vector<std::vector<std::vector<int>>> &dp) {
+int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int>> &matrix, std::vector<std::vector<std::vector<int>>> &dp) {
     if (z >= s.size())
         return 0; // Base case
     else if (n >= matrix.size() || m >= matrix.front().size() || n < 0 || m < 0)
@@ -21,7 +21,7 @@ int f(int n, int m, int z, std::vector<int> &s, std::vector<std::vector<int>> &m
     }
 }
 
-int f(int n, int m, int z, std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
+int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
     if (z >= s.size())
         return 0; // Base case
     else if (n >= matrix.size() || m >= matrix.front().size() || n < 0 || m < 0)
@@ -37,30 +37,30 @@ int f(int n, int m, int z, std::vector<int> &s, std::vector<std::vector<int>> &m
 }
 
 // Memoization Wrapper:
-int memoization(std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
+int memoization(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
     std::vector<std::vector<std::vector<int>>> dp(matrix.size(), std::vector<std::vector<int>>(matrix.front().size(), std::vector<int>(s.size(), -1)));
     int min = INT_MAX; // Find the minimum value:
-    for (int i = 0; i < matrix.size(); ++i)
-            for (int j = 0; j < matrix.front().size(); ++j)
+    for (std::size_t i = 0; i < matrix.size(); ++i)
+            for (std::size_t j = 0; j < matrix.front().size(); ++j)
                 min = std::min(f(i, j, 0, s, matrix, dp), min); // Calculate the minimum value for each starting point
     return min;
 }
 
 // Recursive Wrapper:
-int recursive(std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
+int recursive(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
     int min = INT_MAX; // Find the minimum value:
-    for (int i = 0; i < matrix.size(); ++i)
-            for (int j = 0; j < matrix.front().size(); ++j)
+    for (std::size_t i = 0; i < matrix.size(); ++i)
+            for (std::size_t j = 0; j < matrix.front().size(); ++j)
                 min = std::min(f(i, j, 0, s, matrix), min); // Calculate the minimum value for each starting point
     return min;
 }
 
 // Iterative
-int iterative(std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
+int iterative(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
     std::vector<std::vector<std::vector<int>>> dp(s.size() + 1, std::vector<std::vector<int>>(matrix.size(), std::vector<int>(matrix.front().size(), 0)));
-    for (int i = 1; i < dp.size(); ++i) // Iterate through the matrix:
-            for (int j = 0; j < dp.front().size(); ++j) // Iterate through the rows
-                for (int l = 0; l < dp.front().front().size(); ++l) // Iterate through the columns
+    for (std::size_t i = 1; i < dp.size(); ++i) // Iterate through the matrix:
+            for (std::size_t j = 0; j < dp.front().size(); ++j) // Iterate through the rows
+                for (std::size_t l = 0; l < dp.front().front().size(); ++l) // Iterate through the columns
                     dp.at(i).at(j).at(l) = std::abs(matrix.at(j).at(l) - s.at(s.size() - i)) + std::min({
                         (j + 1 < dp.front().size() ? dp.at(i - 1).at(j + 1).at(l) : INT_MAX), // Go down
                         (j - 1 >= 0 ? dp.at(i - 1).at(j - 1).at(l) : INT_MAX), // Go up
@@ -68,29 +68,29 @@ int iterative(std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
                         (l - 1 >= 0 ? dp.at(i - 1).at(j).at(l - 1) : INT_MAX) // Go left
                     });
     int min = INT_MAX; // Find the minimum value:
-    for (int i = 0; i < dp.front().size(); ++i)
-        for (int j = 0; j < dp.front().front().size(); ++j)
+    for (std::size_t i = 0; i < dp.front().size(); ++i)
+        for (std::size_t j = 0; j < dp.front().front().size(); ++j)
             min = std::min(min, dp.front().at(i).at(j));
     return min;
 }
             
 
 // Iterative:
-std::tuple<int, std::pair<int, int>, std::string> iterative_path(std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
+std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> iterative_path(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
     std::vector<std::vector<std::vector<int>>> dp(s.size() + 1, std::vector<std::vector<int>>(matrix.size(), std::vector<int>(matrix.front().size(), 0)));
-    std::vector<std::pair<int, int>> path(s.size(), {0, 0});
-    for (int i = 1; i < dp.size(); ++i) // Iterate through the matrix:
-            for (int j = 0; j < dp.front().size(); ++j) // Iterate through the rows
-                for (int l = 0; l < dp.front().front().size(); ++l) // Iterate through the columns
+    std::vector<std::pair<std::size_t, std::size_t>> path(s.size(), {0, 0});
+    for (std::size_t i = 1; i < dp.size(); ++i) // Iterate through the matrix:
+            for (std::size_t j = 0; j < dp.front().size(); ++j) // Iterate through the rows
+                for (std::size_t l = 0; l < dp.front().front().size(); ++l) // Iterate through the columns
                     dp.at(i).at(j).at(l) = std::abs(matrix.at(j).at(l) - s.at(s.size() - i)) + std::min({
                         (j + 1 < dp.front().size() ? dp.at(i - 1).at(j + 1).at(l) : INT_MAX), // Go down
-                        (j - 1 >= 0 ? dp.at(i - 1).at(j - 1).at(l) : INT_MAX), // Go up
+                        (j > 0 ? dp.at(i - 1).at(j - 1).at(l) : INT_MAX), // Go up
                         (l + 1 < dp.front().front().size() ? dp.at(i - 1).at(j).at(l + 1) : INT_MAX), // Go right
-                        (l - 1 >= 0 ? dp.at(i - 1).at(j).at(l - 1) : INT_MAX) // Go left
+                        (l > 0 ? dp.at(i - 1).at(j).at(l - 1) : INT_MAX) // Go left
                     });
     int min = INT_MAX; // Find the minimum value:
-    for (int i = 0; i < dp.front().size(); ++i)
-        for (int j = 0; j < dp.front().front().size(); ++j)
+    for (std::size_t i = 0; i < dp.front().size(); ++i)
+        for (std::size_t j = 0; j < dp.front().front().size(); ++j)
             if (dp.back().at(i).at(j) < min) {
                 path.front() = {i, j};
                 min = dp.back().at(i).at(j);
@@ -98,9 +98,9 @@ std::tuple<int, std::pair<int, int>, std::string> iterative_path(std::vector<int
     std::string path_s;
     int up, down, left, right; // Find the path:
     std::vector<std::pair<int, int>> coordinate(4, {0, 0});
-    for (int i = 1; i < dp.size() - 1; i++) {
+    for (std::size_t i = 1; i < dp.size() - 1; i++) {
         up = down = left = right = INT_MAX;
-        if (path.at(i - 1).first - 1 >= 0) { // Check if the path is valid
+        if (path.at(i - 1).first > 0) { // Check if the path is valid
             up = dp.at(dp.size() - i - 1).at(path.at(i - 1).first - 1).at(path.at(i - 1).second);
             coordinate.at(0) = {path.at(i - 1).first - 1, path.at(i - 1).second};
         }
@@ -108,7 +108,7 @@ std::tuple<int, std::pair<int, int>, std::string> iterative_path(std::vector<int
             down = dp.at(dp.size() - i - 1).at(path.at(i - 1).first + 1).at(path.at(i - 1).second);
             coordinate.at(1) = {path.at(i - 1).first + 1, path.at(i - 1).second};
         }
-        if (path.at(i - 1).second - 1 >= 0) { // Check if the path is valid
+        if (path.at(i - 1).second > 0) { // Check if the path is valid
             left = dp.at(dp.size() - i - 1).at(path.at(i - 1).first).at(path.at(i - 1).second - 1);
             coordinate.at(2) = {path.at(i - 1).first, path.at(i - 1).second - 1};
         }
@@ -137,26 +137,26 @@ std::tuple<int, std::pair<int, int>, std::string> iterative_path(std::vector<int
     }
     path.front().first++;
     path.front().second++;
-    std::tuple<int, std::pair<int, int>, std::string> tuple(min, path.front(), path_s);
+    std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> tuple(min, path.front(), path_s);
     return tuple;
 }
 
 // Iterative with reduced space complexity:
-int iterative_reduced(std::vector<int> &s, std::vector<std::vector<int>> &matrix) {
+int iterative_reduced(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
     std::vector<std::vector<std::vector<int>>> dp(2, std::vector<std::vector<int>>(matrix.size(), std::vector<int>(matrix.front().size(), 0)));
-    int i, j, l; // Iterate through the matrix:
+    std::size_t i, j, l; // Iterate through the matrix:
     for (i = 1; i < s.size() + 1; ++i) // Iterate through the matrixes
         for (j = 0; j < dp.front().size(); ++j) // Iterate through the rows
             for (l = 0; l < dp.front().front().size(); ++l) // Iterate through the columns
                 dp.at((i & 1)).at(j).at(l) = std::abs(matrix.at(j).at(l) - s.at(s.size() - i)) + std::min({ // Calculate the minimum value
                     (j + 1 < dp.front().size() ? dp.at((i - 1) & 1).at(j + 1).at(l) : INT_MAX), // Go down
-                    (j - 1 >= 0 ? dp.at((i - 1) & 1).at(j - 1).at(l) : INT_MAX), // Go up
+                    (j > 0 ? dp.at((i - 1) & 1).at(j - 1).at(l) : INT_MAX), // Go up
                     (l + 1 < dp.front().front().size() ? dp.at((i - 1) & 1).at(j).at(l + 1) : INT_MAX), // Go right
-                    (l - 1 >= 0 ? dp.at((i - 1) & 1).at(j).at(l - 1) : INT_MAX) // Go left
+                    (l > 0 ? dp.at((i - 1) & 1).at(j).at(l - 1) : INT_MAX) // Go left
                 });
     int min = INT_MAX; // Find the minimum value:
-    for (int row = 0; row < dp.front().size(); ++row)
-        for (int j = 0; j < dp.front().front().size(); ++j)
+    for (std::size_t row = 0; row < dp.front().size(); ++row)
+        for (std::size_t j = 0; j < dp.front().front().size(); ++j)
             min = std::min(min, dp.at(!(i & 1)).at(row).at(j)); // Find the minimum for every starting point
     return min;
 }
@@ -182,9 +182,8 @@ int main() {
         std::cerr << "Error opening the file." << std::endl;
         return 1;
     }
-
     // Calculate the minimum value:
-    std::tuple<int, std::pair<int, int>, std::string> tuple = iterative_path(s, matrix); // Iterative with path
+    std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> tuple = iterative_path(s, matrix); // Iterative with path
     // Write the output:
     std::ofstream output("output.txt");
     if (output.is_open()) {

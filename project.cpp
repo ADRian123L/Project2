@@ -63,14 +63,14 @@ int iterative(const std::vector<int> &s, const std::vector<std::vector<int>> &ma
                 for (std::size_t l = 0; l < dp.front().front().size(); ++l) // Iterate through the columns
                     dp.at(i).at(j).at(l) = std::abs(matrix.at(j).at(l) - s.at(s.size() - i)) + std::min({
                         (j + 1 < dp.front().size() ? dp.at(i - 1).at(j + 1).at(l) : INT_MAX), // Go down
-                        (j - 1 >= 0 ? dp.at(i - 1).at(j - 1).at(l) : INT_MAX), // Go up
+                        (j > 0 ? dp.at(i - 1).at(j - 1).at(l) : INT_MAX), // Go up
                         (l + 1 < dp.front().front().size() ? dp.at(i - 1).at(j).at(l + 1) : INT_MAX), // Go right
-                        (l - 1 >= 0 ? dp.at(i - 1).at(j).at(l - 1) : INT_MAX) // Go left
+                        (l > 0 ? dp.at(i - 1).at(j).at(l - 1) : INT_MAX) // Go left
                     });
     int min = INT_MAX; // Find the minimum value:
-    for (std::size_t i = 0; i < dp.front().size(); ++i)
-        for (std::size_t j = 0; j < dp.front().front().size(); ++j)
-            min = std::min(min, dp.front().at(i).at(j));
+    for (std::size_t i = 0; i < dp.back().size(); ++i)
+        for (std::size_t j = 0; j < dp.back().front().size(); ++j)
+            min = std::min(min, dp.back().at(i).at(j));
     return min;
 }
             
@@ -182,6 +182,7 @@ int main() {
         std::cerr << "Error opening the file." << std::endl;
         return 1;
     }
+    std::cout << "Iterative: " << iterative(s, matrix) << std::endl;
     // Calculate the minimum value:
     /* We are calling 'iterative_path' which returns a three values: the minimal difference, the starting point, and the path. 
     The function is iterative. */

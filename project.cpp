@@ -28,7 +28,7 @@ int f(int n, int m, std::size_t z, const std::vector<int> &s, const std::vector<
 int f(int n, int m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int> > &matrix) {
     if (z >= s.size())
         return 0; // Base case
-    else if (n >= static_cast<int>(matrix.size()) || static_cast<int>(m >= matrix.front().size()) || n < 0 || m < 0)
+    else if (n >= static_cast<int>(matrix.size()) || m >= static_cast<int>(matrix.front().size()) || n < 0 || m < 0)
         return INT_MAX; // Base case
     else { // Recursive case
         return std::abs(matrix.at(n).at(m) - s.at(z)) + std::min({ // Calculate the minimum value:

@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 
-int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int>> &matrix, std::vector<std::vector<std::vector<int>>> &dp) {
+int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int> > &matrix, std::vector<std::vector<std::vector<int> > > &dp) {
     if (z >= s.size())
         return 0; // Base case
     else if (n >= matrix.size() || m >= matrix.front().size() || n < 0 || m < 0)
@@ -21,7 +21,7 @@ int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, co
     }
 }
 
-int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
+int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int> > &matrix) {
     if (z >= s.size())
         return 0; // Base case
     else if (n >= matrix.size() || m >= matrix.front().size() || n < 0 || m < 0)
@@ -37,8 +37,8 @@ int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, co
 }
 
 // Memoization Wrapper:
-int memoization(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
-    std::vector<std::vector<std::vector<int>>> dp(matrix.size(), std::vector<std::vector<int>>(matrix.front().size(), std::vector<int>(s.size(), -1)));
+int memoization(const std::vector<int> &s, const std::vector<std::vector<int> > &matrix) {
+    std::vector<std::vector<std::vector<int> > > dp(matrix.size(), std::vector<std::vector<int> >(matrix.front().size(), std::vector<int>(s.size(), -1)));
     int min = INT_MAX; // Find the minimum value:
     for (std::size_t i = 0; i < matrix.size(); ++i)
             for (std::size_t j = 0; j < matrix.front().size(); ++j)
@@ -47,7 +47,7 @@ int memoization(const std::vector<int> &s, const std::vector<std::vector<int>> &
 }
 
 // Recursive Wrapper:
-int recursive(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
+int recursive(const std::vector<int> &s, const std::vector<std::vector<int> > &matrix) {
     int min = INT_MAX; // Find the minimum value:
     for (std::size_t i = 0; i < matrix.size(); ++i)
             for (std::size_t j = 0; j < matrix.front().size(); ++j)
@@ -56,8 +56,8 @@ int recursive(const std::vector<int> &s, const std::vector<std::vector<int>> &ma
 }
 
 // Iterative
-int iterative(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
-    std::vector<std::vector<std::vector<int>>> dp(s.size() + 1, std::vector<std::vector<int>>(matrix.size(), std::vector<int>(matrix.front().size(), 0)));
+int iterative(const std::vector<int> &s, const std::vector<std::vector<int> > &matrix) {
+    std::vector<std::vector<std::vector<int> > > dp(s.size() + 1, std::vector<std::vector<int> >(matrix.size(), std::vector<int>(matrix.front().size(), 0)));
     for (std::size_t i = 1; i < dp.size(); ++i) // Iterate through the matrix:
             for (std::size_t j = 0; j < dp.front().size(); ++j) // Iterate through the rows
                 for (std::size_t l = 0; l < dp.front().front().size(); ++l) // Iterate through the columns
@@ -76,9 +76,9 @@ int iterative(const std::vector<int> &s, const std::vector<std::vector<int>> &ma
             
 
 // Iterative:
-std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> iterative_path(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
-    std::vector<std::vector<std::vector<int>>> dp(s.size() + 1, std::vector<std::vector<int>>(matrix.size(), std::vector<int>(matrix.front().size(), 0))); // Create a 3D vector to store the values
-    std::vector<std::pair<std::size_t, std::size_t>> path(s.size(), {0, 0});
+std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> iterative_path(const std::vector<int> &s, const std::vector<std::vector<int> > &matrix) {
+    std::vector<std::vector<std::vector<int> > > dp(s.size() + 1, std::vector<std::vector<int> >(matrix.size(), std::vector<int>(matrix.front().size(), 0))); // Create a 3D vector to store the values
+    std::vector<std::pair<std::size_t, std::size_t> > path(s.size(), {0, 0});
     for (std::size_t i = 1; i < dp.size(); ++i) // Iterate through the matrix:
             for (std::size_t j = 0; j < dp.front().size(); ++j) // Iterate through the rows
                 for (std::size_t l = 0; l < dp.front().front().size(); ++l) // Iterate through the columns
@@ -97,7 +97,7 @@ std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> iterative_path
             }
     std::string path_s; // String to store the path
     int up, down, left, right; // Find the path:
-    std::vector<std::pair<int, int>> coordinate(4, {0, 0});
+    std::vector<std::pair<int, int> > coordinate(4, {0, 0});
     for (std::size_t i = 1; i < dp.size() - 1; i++) {
         up = down = left = right = INT_MAX;
         if (path.at(i - 1).first > 0) { // Check if the path is valid
@@ -145,7 +145,7 @@ std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> iterative_path
 
 // Iterative with reduced space complexity:
 int iterative_reduced(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
-    std::vector<std::vector<std::vector<int>>> dp(2, std::vector<std::vector<int>>(matrix.size(), std::vector<int>(matrix.front().size(), 0)));
+    std::vector<std::vector<std::vector<int> > > dp(2, std::vector<std::vector<int>>(matrix.size(), std::vector<int>(matrix.front().size(), 0)));
     std::size_t i, j, l; // Iterate through the matrix:
     for (i = 1; i < s.size() + 1; ++i) // Iterate through the matrixes
         for (j = 0; j < dp.front().size(); ++j) // Iterate through the rows
@@ -165,7 +165,7 @@ int iterative_reduced(const std::vector<int> &s, const std::vector<std::vector<i
 
 int main() {                
     std::vector<int> s;
-    std::vector<std::vector<int>> matrix;
+    std::vector<std::vector<int> > matrix;
     // Read the input:
     std::ifstream file("input.txt");
     if (file.is_open()) {

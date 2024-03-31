@@ -2,6 +2,10 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <climits>
+#include <algorithm>
+#include <initializer_list>
+#include <tuple>
 
 int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int> > &matrix, std::vector<std::vector<std::vector<int> > > &dp) {
     if (z >= s.size())

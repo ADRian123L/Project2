@@ -188,16 +188,19 @@ int main() {
         std::cerr << "Error opening the file." << std::endl;
         return 1;
     }
-    
+
     // Calculate the minimum value:
 
 
     // Run the memoization:
     // int min = memoization(s, matrix); // Memoization
+
     // Run the recursive:
     //int min = recursive(s, matrix); // Recursive
+
     // Run the iterative:
     //int min = iterative(s, matrix); // Iterative
+    
     // Run the iterative with reduced space complexity:
     //int min = iterative_reduced(s, matrix); // Iterative with reduced space complexity
 

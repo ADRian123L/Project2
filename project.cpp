@@ -188,6 +188,7 @@ int main() {
         std::cerr << "Error opening the file." << std::endl;
         return 1;
     }
+    
     // Calculate the minimum value:
 
 

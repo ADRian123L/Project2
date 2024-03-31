@@ -7,10 +7,10 @@
 #include <initializer_list>
 #include <tuple>
 
-int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int> > &matrix, std::vector<std::vector<std::vector<int> > > &dp) {
+int f(int n, int m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int> > &matrix, std::vector<std::vector<std::vector<int> > > &dp) {
     if (z >= s.size())
         return 0; // Base case
-    else if (n >= matrix.size() || m >= matrix.front().size() || n < 0 || m < 0)
+    else if (n >= static_cast<int>(matrix.size()) || m >= static_cast<int>(matrix.front().size()) || n < 0 || m < 0)
         return INT_MAX; // Base case
     else if (dp.at(n).at(m).at(z) != -1)
         return dp.at(n).at(m).at(z); // Return the value if it has been calculated
@@ -25,10 +25,10 @@ int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, co
     }
 }
 
-int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int> > &matrix) {
+int f(int n, int m, std::size_t z, const std::vector<int> &s, const std::vector<std::vector<int> > &matrix) {
     if (z >= s.size())
         return 0; // Base case
-    else if (n >= matrix.size() || m >= matrix.front().size() || n < 0 || m < 0)
+    else if (n >= static_cast<int>(matrix.size()) || static_cast<int>(m >= matrix.front().size()) || n < 0 || m < 0)
         return INT_MAX; // Base case
     else { // Recursive case
         return std::abs(matrix.at(n).at(m) - s.at(z)) + std::min({ // Calculate the minimum value:
@@ -44,8 +44,8 @@ int f(std::size_t n, std::size_t m, std::size_t z, const std::vector<int> &s, co
 int memoization(const std::vector<int> &s, const std::vector<std::vector<int> > &matrix) {
     std::vector<std::vector<std::vector<int> > > dp(matrix.size(), std::vector<std::vector<int> >(matrix.front().size(), std::vector<int>(s.size(), -1)));
     int min = INT_MAX; // Find the minimum value:
-    for (std::size_t i = 0; i < matrix.size(); ++i)
-            for (std::size_t j = 0; j < matrix.front().size(); ++j)
+    for (int i = 0; i < static_cast<int>(matrix.size()); ++i)
+            for (int j = 0; j < static_cast<int>(matrix.front().size()); ++j)
                 min = std::min(f(i, j, 0, s, matrix, dp), min); // Calculate the minimum value for each starting point
     return min;
 }
@@ -53,8 +53,8 @@ int memoization(const std::vector<int> &s, const std::vector<std::vector<int> > 
 // Recursive Wrapper:
 int recursive(const std::vector<int> &s, const std::vector<std::vector<int> > &matrix) {
     int min = INT_MAX; // Find the minimum value:
-    for (std::size_t i = 0; i < matrix.size(); ++i)
-            for (std::size_t j = 0; j < matrix.front().size(); ++j)
+    for (int i = 0; i < static_cast<int>(matrix.size()); ++i)
+            for (int j = 0; j < static_cast<int>(matrix.front().size()); ++j)
                 min = std::min(f(i, j, 0, s, matrix), min); // Calculate the minimum value for each starting point
     return min;
 }

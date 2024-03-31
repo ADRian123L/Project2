@@ -77,7 +77,7 @@ int iterative(const std::vector<int> &s, const std::vector<std::vector<int>> &ma
 
 // Iterative:
 std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> iterative_path(const std::vector<int> &s, const std::vector<std::vector<int>> &matrix) {
-    std::vector<std::vector<std::vector<int>>> dp(s.size() + 1, std::vector<std::vector<int>>(matrix.size(), std::vector<int>(matrix.front().size(), 0)));
+    std::vector<std::vector<std::vector<int>>> dp(s.size() + 1, std::vector<std::vector<int>>(matrix.size(), std::vector<int>(matrix.front().size(), 0))); // Create a 3D vector to store the values
     std::vector<std::pair<std::size_t, std::size_t>> path(s.size(), {0, 0});
     for (std::size_t i = 1; i < dp.size(); ++i) // Iterate through the matrix:
             for (std::size_t j = 0; j < dp.front().size(); ++j) // Iterate through the rows
@@ -92,8 +92,8 @@ std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> iterative_path
     for (std::size_t i = 0; i < dp.front().size(); ++i)
         for (std::size_t j = 0; j < dp.front().front().size(); ++j)
             if (dp.back().at(i).at(j) < min) {
-                path.front() = {i, j};
-                min = dp.back().at(i).at(j);
+                path.front() = {i, j}; // Store the starting point
+                min = dp.back().at(i).at(j); // Find the minimum for every starting point
             }
     std::string path_s; // String to store the path
     int up, down, left, right; // Find the path:
@@ -134,10 +134,12 @@ std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> iterative_path
             path_s.push_back('R');
             path.at(i) = coordinate.at(3);
         }
+        path_s.push_back(' ');
     }
-    path.front().first++;
-    path.front().second++;
-    std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> tuple(min, path.front(), path_s);
+    path_s.pop_back(); // Remove the last space
+    path.front().first++; // Increment the starting point
+    path.front().second++; // Increment the starting point
+    std::tuple<int, std::pair<std::size_t, std::size_t>, std::string> tuple(min, path.front(), path_s); // Return the tuple
     return tuple;
 }
 
